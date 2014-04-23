@@ -2,7 +2,9 @@
     "name": "xpnjs",
     "version": "0.0.1",
     "dependencies": {
-        "angular-ui-date": "latest"
+        "angular-ui-date": "latest",
+        "angular-xeditable": "latest",
+        "bootstrap": "3.1.1"
     },
     "directory": "include",
     "private": true

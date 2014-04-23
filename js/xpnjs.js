@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var xpnjsApp = angular.module('xpnjsApp', ["xeditable"]);
+var xpnjsApp = angular.module('xpnjsApp', ["xeditable", "ui.date"]);
 
 xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
     // debug?

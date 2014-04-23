@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html ng-app="xpnjsApp">
 <head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+
     <title>Note de Frais</title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="css/xpns.css" rel="stylesheet"/>
+    <!-- bower -->
+    <link rel="stylesheet" href="bower_components/jquery-ui/themes/flick/jquery-ui.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css"/>
 
-    <!--<script src="js/angular.min.js"></script>-->
-    <script src="js/angular.js"></script>
-    <script src="js/xpnjs.js"></script>
-
-    <link href="css/xeditable.css" rel="stylesheet">
-    <script src="js/xeditable.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
+    <script type="text/javascript" src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/angular-ui-date/src/date.js"></script>
+    <script type="text/javascript" src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
 
     <script src="js/i18n/angular-locale_fr-fr.js"></script>
 
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-    <meta content="utf-8" http-equiv="encoding">
+    <script src="js/xpnjs.js"></script>
+
+    <link href="css/xpns.css" rel="stylesheet"/>
 </head>
 <body ng-controller="xpnsListCtrl">
 
@@ -42,7 +47,7 @@
        <form name="lineForm" novalidate ng-submit="addLine(newLine, lineForm.$valid)">
            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
         <div class="row addLine">
-            <div class="col-md-2"><input type="date" ng-model="newLine.date" required class="col-md-6"/></div>
+            <div class="col-md-2"><input ui-date ui-date-format="dd/mm" ng-model="newLine.date" required class="col-md-7"/></div>
             <div class="col-md-4"><input type="text" ng-model="newLine.label" required/></div>
             <div class="col-md-2"><input type="number" min="0" ng-model="newLine.resto"/></div>
             <div class="col-md-2"><input type="number" min="0" ng-model="newLine.parking"/></div>

@@ -15,6 +15,7 @@
     <script type="text/javascript" src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>
     <script type="text/javascript" src="bower_components/angular-ui-date/src/date.js"></script>
+    <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script type="text/javascript" src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
 
     <script src="js/i18n/angular-locale_fr-fr.js"></script>
@@ -37,7 +38,7 @@
         </div>
         <div class="row" ng-repeat="xpn in xpns | orderBy:orderProp">
             <span class="" ng-show="debug">{{xpn.id}}</span>
-            <div class="col-md-2"><span data-type="date" editable-text="xpn.date" buttons="no">{{xpn.date | date:'dd/MM'}}</span></div>
+            <div class="col-md-2"><span editable-bsdate="xpn.date" e-datepicker-popup="dd/MM" buttons="yes">{{xpn.date | date:'dd/MM'}}</span></div>
             <div class="col-md-4"><span editable-text="xpn.label" buttons="no">{{xpn.label}}</span></div>
             <div class="col-md-2"><span editable-number="xpn.resto" buttons="no">{{xpn.resto | currency}}</span></div>
             <div class="col-md-2"><span editable-number="xpn.parking" buttons="no">{{xpn.parking | currency}}</span></div>

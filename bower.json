@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "dependencies": {
         "angular-ui-date": "latest",
-        "angular-ui-bootstrap": "latest",
+        "angular-bootstrap": "latest",
         "angular-xeditable": "latest",
         "bootstrap2.3.2": "latest"
     },

@@ -10,6 +10,9 @@
     <script src="js/angular.js"></script>
     <script src="js/xpnjs.js"></script>
 
+    <link href="css/xeditable.css" rel="stylesheet">
+    <script src="js/xeditable.js"></script>
+
     <script src="js/i18n/angular-locale_fr-fr.js"></script>
 
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
@@ -29,14 +32,15 @@
         </div>
         <div class="row" ng-repeat="xpn in xpns | orderBy:orderProp">
             <span class="" ng-show="debug">{{xpn.id}}</span>
-            <div class="col-md-2">{{xpn.date | date:'dd/MM'}}</div>
-            <div class="col-md-4">{{xpn.label}}</div>
-            <div class="col-md-2">{{xpn.resto | currency}}</div>
-            <div class="col-md-2">{{xpn.parking | currency}}</div>
-            <div class="col-md-1"></div>
+            <div class="col-md-2"><span editable-text="xpn.date" buttons="no">{{xpn.date | date:'dd/MM'}}</span></div>
+            <div class="col-md-4"><span editable-text="xpn.label" buttons="no">{{xpn.label}}</span></div>
+            <div class="col-md-2"><span editable-number="xpn.resto" buttons="no">{{xpn.resto | currency}}</span></div>
+            <div class="col-md-2"><span editable-number="xpn.parking" buttons="no">{{xpn.parking | currency}}</span></div>
+            <div class="col-md-1"><a href="#" class="btn" ng-click="removeLine(xpn)">delete</a></div>
         </div>
 
-       <form name="lineForm" novalidate>
+       <form name="lineForm" novalidate ng-submit="addLine(newLine, lineForm.$valid)">
+           <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
         <div class="row addLine">
             <div class="col-md-2"><input type="date" ng-model="newLine.date" required class="col-md-6"/></div>
             <div class="col-md-4"><input type="text" ng-model="newLine.label" required/></div>

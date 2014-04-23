@@ -6,10 +6,14 @@
     <link href="css/bootstrap.min.css" rel="stylesheet"/>
     <link href="css/xpns.css" rel="stylesheet"/>
 
-    <script src="js/angular.min.js"></script>
+    <!--<script src="js/angular.min.js"></script>-->
+    <script src="js/angular.js"></script>
     <script src="js/xpnjs.js"></script>
 
     <script src="js/i18n/angular-locale_fr-fr.js"></script>
+
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
 </head>
 <body ng-controller="xpnsListCtrl">
 
@@ -17,30 +21,36 @@
 
     <div class="container xpenses">
         <div class="row header">
-            <div class="col-md-1">date</div>
+            <div class="col-md-2">date</div>
             <div class="col-md-4">label</div>
             <div class="col-md-2">resto</div>
             <div class="col-md-2">parking</div>
+            <div class="col-md-1"></div>
         </div>
         <div class="row" ng-repeat="xpn in xpns | orderBy:orderProp">
-            <div class="col-md-1">{{xpn.date | date:'dd/MM'}}</div>
+            <span class="" ng-show="debug">{{xpn.id}}</span>
+            <div class="col-md-2">{{xpn.date | date:'dd/MM'}}</div>
             <div class="col-md-4">{{xpn.label}}</div>
             <div class="col-md-2">{{xpn.resto | currency}}</div>
             <div class="col-md-2">{{xpn.parking | currency}}</div>
+            <div class="col-md-1"></div>
         </div>
 
+       <form name="lineForm" novalidate>
         <div class="row addLine">
-            <div class="col-md-1"><input type="text" ng-model="newDate"/></div>
-            <div class="col-md-4"><input type="text" ng-model="newLabel"/></div>
-            <div class="col-md-2"><input type="text" ng-model="newResto"/></div>
-            <div class="col-md-2"><input type="text" ng-model="newParking"/></div>
-            <div class="col-md-1"><a href="#" class="btn" ng-click="addLine()">add</a></div>
+            <div class="col-md-2"><input type="date" ng-model="newLine.date" required class="col-md-6"/></div>
+            <div class="col-md-4"><input type="text" ng-model="newLine.label" required/></div>
+            <div class="col-md-2"><input type="number" min="0" ng-model="newLine.resto"/></div>
+            <div class="col-md-2"><input type="number" min="0" ng-model="newLine.parking"/></div>
+            <div class="col-md-1"><a href="#" class="btn" ng-show="lineForm.$valid" ng-click="addLine(newLine, lineForm.$valid)">add</a></div>
         </div>
+       </form>
 
         <div class="row footer">
-            <div class="col-md-5"></div>
-            <div class="col-md-2">{{xpns | sum:'resto'}}</div>
-            <div class="col-md-2">{{totalParking}}</div>
+            <div class="col-md-6">TOTAL</div>
+            <div class="col-md-2">{{ totalResto | currency }}</div>
+            <div class="col-md-2">{{ totalParking |currency }}</div>
+            <div class="col-md-1">{{ total |currency }}</div>
         </div>
     </div>
 

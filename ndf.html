@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="xpnjsApp">
+<head>
+    <title>Note de Frais</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/xpns.css" rel="stylesheet"/>
+
+    <script src="js/angular.min.js"></script>
+    <script src="js/xpnjs.js"></script>
+
+    <script src="js/i18n/angular-locale_fr-fr.js"></script>
+</head>
+<body ng-controller="xpnsListCtrl">
+
+    <h1 class="main">Note de Frais</h1>
+
+    <div class="container xpenses">
+        <div class="row header">
+            <div class="col-md-1">date</div>
+            <div class="col-md-4">label</div>
+            <div class="col-md-2">resto</div>
+            <div class="col-md-2">parking</div>
+        </div>
+        <div class="row" ng-repeat="xpn in xpns | orderBy:orderProp">
+            <div class="col-md-1">{{xpn.date | date:'dd/MM'}}</div>
+            <div class="col-md-4">{{xpn.label}}</div>
+            <div class="col-md-2">{{xpn.resto | currency}}</div>
+            <div class="col-md-2">{{xpn.parking | currency}}</div>
+        </div>
+
+        <div class="row addLine">
+            <div class="col-md-1"><input type="text" ng-model="newDate"/></div>
+            <div class="col-md-4"><input type="text" ng-model="newLabel"/></div>
+            <div class="col-md-2"><input type="text" ng-model="newResto"/></div>
+            <div class="col-md-2"><input type="text" ng-model="newParking"/></div>
+            <div class="col-md-1"><a href="#" class="btn" ng-click="addLine()">add</a></div>
+        </div>
+
+        <div class="row footer">
+            <div class="col-md-5"></div>
+            <div class="col-md-2">{{xpns | sum:'resto'}}</div>
+            <div class="col-md-2">{{totalParking}}</div>
+        </div>
+    </div>
+
+</body>
+</html>

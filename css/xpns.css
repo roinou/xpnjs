@@ -1,0 +1,14 @@
+
+h1.main {
+    text-align: center;
+    padding-bottom: 1em;
+}
+
+
+div.header {
+    padding: 10px 0;
+}
+.xpenses .header {
+    font-weight: bold;
+
+}

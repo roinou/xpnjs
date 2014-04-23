@@ -1,0 +1,24 @@
+{
+    "range": "2013-12",
+    "data": [
+        {
+            "id": 1,
+            "date": "2013-12-29",
+            "label": "resto 1",
+            "resto": 23.35,
+            "parking": null
+        },
+        {
+            "id": 2,
+            "date": "2013-12-28",
+            "label": "resto 2",
+            "resto": 41.7
+        },
+        {
+            "id": 3,
+            "date": "2013-12-23",
+            "label": "parking",
+            "parking": 1.5
+        }
+    ]
+}

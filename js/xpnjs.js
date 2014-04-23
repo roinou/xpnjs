@@ -76,5 +76,5 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
 
 // module init
 xpnjsApp.run(function(editableOptions) {
-    editableOptions.theme = 'bs3';
+    editableOptions.theme = 'bs2';
 });

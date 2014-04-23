@@ -3,8 +3,9 @@
     "version": "0.0.1",
     "dependencies": {
         "angular-ui-date": "latest",
+        "angular-ui-bootstrap": "latest",
         "angular-xeditable": "latest",
-        "bootstrap": "3.1.1"
+        "bootstrap2.3.2": "latest"
     },
     "directory": "include",
     "private": true

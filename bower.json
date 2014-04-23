@@ -1,0 +1,9 @@
+{
+    "name": "xpnjs",
+    "version": "0.0.1",
+    "dependencies": {
+        "angular-ui-date": "latest"
+    },
+    "directory": "include",
+    "private": true
+}

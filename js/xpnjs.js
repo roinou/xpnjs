@@ -7,7 +7,7 @@ var xpnjsApp = angular.module('xpnjsApp', ["xeditable", "ui.bootstrap"]);
 
 xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
     // debug?
-    $scope.debug = true;
+    $scope.debug = false;
 
     // loading data
     $http.get('data/xpns-201312.json').success(function(data) {
@@ -84,3 +84,40 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
 xpnjsApp.run(function(editableOptions) {
     editableOptions.theme = 'bs3';
 });
+
+// bootstrap 'has error' directive. Will add 'has-error' css class if input is invalid
+// needs JQuery to work
+xpnjsApp.directive('bsHasError', [function() {
+    return {
+        restrict: "A",
+        link: function(scope, element, attrs, ctrl) {
+            var input = element.find("input[ng-model]");
+            $.each(input, function(index, current) {
+                if (current) {
+                    scope.$watch(function () {
+                        var valid = $(current).hasClass('ng-valid'),
+                            pristine = $(current).hasClass('ng-pristine'),
+                            dirty = $(current).hasClass('ng-dirty'),
+                            error = $(current).hasClass('ng-invalid'),
+                            required = $(current).hasClass('ng-invalid-required');
+                        var ret = "";
+                        if (dirty && error) {
+                            ret = 'has-error';
+                        }
+                        if (valid && dirty) {
+                            ret = 'has-success';
+                        }
+                        return ret;
+                    }, function (oldVal, newVal) {
+                        if (newVal)
+                            $(current).parent().toggleClass(newVal);
+                        if (oldVal)
+                            $(current).parent().toggleClass(oldVal);
+                    });
+                }
+
+            })
+
+        }
+    };
+}]);

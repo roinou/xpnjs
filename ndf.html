@@ -11,6 +11,7 @@
     <!--<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>-->
     <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css"/>
 
+    <script type="text/javascript" src="bower_components/jquery/jquery.js"></script>
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>
     <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script type="text/javascript" src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
@@ -42,12 +43,12 @@
             <div class="col-md-4"><span editable-text="xpn.label" buttons="no">{{xpn.label}}</span></div>
             <div class="col-md-2"><span editable-number="xpn.resto" buttons="no">{{xpn.resto | currency}}</span></div>
             <div class="col-md-2"><span editable-number="xpn.parking" buttons="no">{{xpn.parking | currency}}</span></div>
-            <div class="col-md-1"><a href="#" class="btn" ng-click="removeLine(xpn)"><span class="glyphicon glyphicon-remove"></a></div>
+            <div class="col-md-1"><a href="#" class="btn" ng-click="removeLine(xpn)"><span class="glyphicon glyphicon-remove"></span></a></div>
         </div>
 
        <form name="lineForm" novalidate ng-submit="addLine(newLine, lineForm.$valid)">
            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
-        <div class="row addLine">
+        <div class="row addLine form-group" bs-has-error>
             <div class="col-md-2"><input type="text" datepicker-popup="dd/MM" show-button-bar="no" ng-model="newLine.date"
                                           required class="form-control"/></div>
             <div class="col-md-4"><input type="text" ng-model="newLine.label" required class="form-control"/></div>

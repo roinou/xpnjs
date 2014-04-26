@@ -3,7 +3,7 @@
  */
 'use strict';
 
-var xpnjsApp = angular.module('xpnjsApp', ["xeditable", "ui.date", "ui.bootstrap"]);
+var xpnjsApp = angular.module('xpnjsApp', ["xeditable", "ui.bootstrap"]);
 
 xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
     // debug?
@@ -52,12 +52,18 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
     // edit line
     $scope.editLine = function(line) {
         $scope.newLine = angular.copy(line);
-    }
+    };
+    // returns false if the new date is null
+    $scope.checkDate = function(data, oldValue) {
+        if (!data) {
+            return false;
+        }
+    };
 
     // delete line
     $scope.removeLine = function (line) {
         removeById($scope.xpns, line.id);
-    }
+    };
 
     // utility methods
     /**
@@ -76,5 +82,5 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
 
 // module init
 xpnjsApp.run(function(editableOptions) {
-    editableOptions.theme = 'bs2';
+    editableOptions.theme = 'bs3';
 });

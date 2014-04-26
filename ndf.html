@@ -7,16 +7,14 @@
     <title>Note de Frais</title>
 
     <!-- bower -->
-    <link rel="stylesheet" href="bower_components/jquery-ui/themes/flick/jquery-ui.css"/>
-    <link rel="stylesheet" href="bower_components/bootstrap2.3.2/bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <!--<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css"/>-->
     <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css"/>
 
-    <script type="text/javascript" src="bower_components/jquery/jquery.js"></script>
-    <script type="text/javascript" src="bower_components/jquery-ui/ui/jquery-ui.js"></script>
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>
-    <script type="text/javascript" src="bower_components/angular-ui-date/src/date.js"></script>
     <script type="text/javascript" src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script type="text/javascript" src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <!-- !bower -->
 
     <script src="js/i18n/angular-locale_fr-fr.js"></script>
 
@@ -38,21 +36,26 @@
         </div>
         <div class="row" ng-repeat="xpn in xpns | orderBy:orderProp">
             <span class="" ng-show="debug">{{xpn.id}}</span>
-            <div class="col-md-2"><span editable-bsdate="xpn.date" e-datepicker-popup="dd/MM" buttons="yes">{{xpn.date | date:'dd/MM'}}</span></div>
+            <div class="col-md-2"><span editable-bsdate="xpn.date" buttons="no" blur="submit" onbeforesave="checkDate($data, xpn.date)"
+                                        e-show-button-bar="false" e-datepicker-popup="dd/MM" e-required="true"
+                                        e-class="form-control">{{xpn.date | date:'dd/MM'}}</span></div>
             <div class="col-md-4"><span editable-text="xpn.label" buttons="no">{{xpn.label}}</span></div>
             <div class="col-md-2"><span editable-number="xpn.resto" buttons="no">{{xpn.resto | currency}}</span></div>
             <div class="col-md-2"><span editable-number="xpn.parking" buttons="no">{{xpn.parking | currency}}</span></div>
-            <div class="col-md-1"><a href="#" class="btn" ng-click="removeLine(xpn)">delete</a></div>
+            <div class="col-md-1"><a href="#" class="btn" ng-click="removeLine(xpn)"><span class="glyphicon glyphicon-remove"></a></div>
         </div>
 
        <form name="lineForm" novalidate ng-submit="addLine(newLine, lineForm.$valid)">
            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
         <div class="row addLine">
-            <div class="col-md-2"><input ui-date ui-date-format="dd/mm" ng-model="newLine.date" required class="col-md-7"/></div>
-            <div class="col-md-4"><input type="text" ng-model="newLine.label" required/></div>
-            <div class="col-md-2"><input type="number" min="0" ng-model="newLine.resto"/></div>
-            <div class="col-md-2"><input type="number" min="0" ng-model="newLine.parking"/></div>
-            <div class="col-md-1"><a href="#" class="btn" ng-show="lineForm.$valid" ng-click="addLine(newLine, lineForm.$valid)">add</a></div>
+            <div class="col-md-2"><input type="text" datepicker-popup="dd/MM" show-button-bar="no" ng-model="newLine.date"
+                                          required class="form-control"/></div>
+            <div class="col-md-4"><input type="text" ng-model="newLine.label" required class="form-control"/></div>
+            <div class="col-md-2"><input type="number" min="0" ng-model="newLine.resto" class="form-control"/></div>
+            <div class="col-md-2"><input type="number" min="0" ng-model="newLine.parking" class="form-control"/></div>
+            <div class="col-md-1"><a href="#" class="btn" ng-show="lineForm.$valid" ng-click="addLine(newLine, lineForm.$valid)">
+                <span class="glyphicon glyphicon-ok"></span>
+            </a></div>
         </div>
        </form>
 

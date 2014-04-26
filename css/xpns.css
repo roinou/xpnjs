@@ -12,3 +12,10 @@ div.header {
     font-weight: bold;
 
 }
+
+/* XEDITABLE */
+.editable-wrap,
+.editable-wrap .editable-controls,
+.editable-wrap .editable-controls .editable-input {
+    width: 100%;
+}

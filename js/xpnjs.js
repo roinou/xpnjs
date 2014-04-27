@@ -115,9 +115,22 @@ xpnjsApp.directive('bsHasError', [function() {
                             $(current).parent().toggleClass(oldVal);
                     });
                 }
-
             })
+        }
+    };
+}]);
 
+xpnjsApp.directive('cell', [function() {
+    return {
+        restrict: "C",
+        link: function(scope, element, attrs, ctrl) {
+            scope.$watch(function () {
+                var ret = element.find("form").length > 0;
+                return ret;
+            }, function(hasInput) {
+                element.toggleClass('input-cell', hasInput);
+//                element.toggleClass('cell', !hasInput);
+            });
         }
     };
 }]);

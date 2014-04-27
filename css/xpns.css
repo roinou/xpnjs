@@ -13,6 +13,28 @@ div.header {
 
 }
 
+.xpenses .cell {
+    border: 1px solid rgba(86, 61, 124, 0.2);
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+.xpenses .form-group .cell{
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+.xpenses .input-cell {
+    padding-bottom: 3px;
+    padding-top: 3px;
+}
+.xpenses .row .action-cell a {
+    padding-top: 10px;
+    display: none;
+}
+.xpenses .row:hover .action-cell a {
+    padding-top: 10px;
+    display: block;
+}
+
 /* XEDITABLE */
 .editable-wrap,
 .editable-wrap .editable-controls,

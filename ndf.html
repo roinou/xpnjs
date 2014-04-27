@@ -29,42 +29,42 @@
 
     <div class="container xpenses">
         <div class="row header">
-            <div class="col-md-2">date</div>
-            <div class="col-md-4">label</div>
-            <div class="col-md-2">resto</div>
-            <div class="col-md-2">parking</div>
-            <div class="col-md-1"></div>
+            <div class="col-md-2 cell">date</div>
+            <div class="col-md-4 cell">label</div>
+            <div class="col-md-2 cell">resto</div>
+            <div class="col-md-2 cell">parking</div>
+            <div class="col-md-1">&nbsp;</div>
         </div>
         <div class="row" ng-repeat="xpn in xpns | orderBy:orderProp">
             <span class="" ng-show="debug">{{xpn.id}}</span>
-            <div class="col-md-2"><span editable-bsdate="xpn.date" buttons="no" blur="submit" onbeforesave="checkDate($data, xpn.date)"
+            <div class="col-md-2 cell"><span editable-bsdate="xpn.date" buttons="no" blur="submit" onbeforesave="checkDate($data, xpn.date)"
                                         e-show-button-bar="false" e-datepicker-popup="dd/MM" e-required="true"
                                         e-class="form-control">{{xpn.date | date:'dd/MM'}}</span></div>
-            <div class="col-md-4"><span editable-text="xpn.label" buttons="no">{{xpn.label}}</span></div>
-            <div class="col-md-2"><span editable-number="xpn.resto" buttons="no">{{xpn.resto | currency}}</span></div>
-            <div class="col-md-2"><span editable-number="xpn.parking" buttons="no">{{xpn.parking | currency}}</span></div>
-            <div class="col-md-1"><a href="#" class="btn" ng-click="removeLine(xpn)"><span class="glyphicon glyphicon-remove"></span></a></div>
+            <div class="col-md-4 cell"><span editable-text="xpn.label" buttons="no">{{xpn.label}}</span></div>
+            <div class="col-md-2 cell"><span editable-number="xpn.resto" buttons="no">{{xpn.resto | currency}}&nbsp;</span></div>
+            <div class="col-md-2 cell"><span editable-number="xpn.parking" buttons="no">{{xpn.parking | currency}}&nbsp;</span></div>
+            <div class="col-md-1 action-cell"><a href="#" ng-click="removeLine(xpn)"><span class="glyphicon glyphicon-remove"></span></a></div>
         </div>
 
        <form name="lineForm" novalidate ng-submit="addLine(newLine, lineForm.$valid)">
            <input type="submit" style="position: absolute; left: -9999px; width: 1px; height: 1px;"/>
         <div class="row addLine form-group" bs-has-error>
-            <div class="col-md-2"><input type="text" datepicker-popup="dd/MM" show-button-bar="no" ng-model="newLine.date"
+            <div class="col-md-2 cell"><input type="text" datepicker-popup="dd/MM" show-button-bar="no" ng-model="newLine.date"
                                           required class="form-control"/></div>
-            <div class="col-md-4"><input type="text" ng-model="newLine.label" required class="form-control"/></div>
-            <div class="col-md-2"><input type="number" min="0" ng-model="newLine.resto" class="form-control"/></div>
-            <div class="col-md-2"><input type="number" min="0" ng-model="newLine.parking" class="form-control"/></div>
-            <div class="col-md-1"><a href="#" class="btn" ng-show="lineForm.$valid" ng-click="addLine(newLine, lineForm.$valid)">
+            <div class="col-md-4 cell"><input type="text" ng-model="newLine.label" required class="form-control"/></div>
+            <div class="col-md-2 cell"><input type="number" min="0" ng-model="newLine.resto" class="form-control"/></div>
+            <div class="col-md-2 cell   "><input type="number" min="0" ng-model="newLine.parking" class="form-control"/></div>
+            <div class="col-md-1 action-cell"><a href="#" ng-show="lineForm.$valid" ng-click="addLine(newLine, lineForm.$valid)">
                 <span class="glyphicon glyphicon-ok"></span>
             </a></div>
         </div>
        </form>
 
         <div class="row footer">
-            <div class="col-md-6">TOTAL</div>
-            <div class="col-md-2">{{ totalResto | currency }}</div>
-            <div class="col-md-2">{{ totalParking |currency }}</div>
-            <div class="col-md-1">{{ total |currency }}</div>
+            <div class="col-md-6 cell">TOTAL</div>
+            <div class="col-md-2 cell">{{ totalResto | currency }}</div>
+            <div class="col-md-2 cell">{{ totalParking | currency }}</div>
+            <div class="col-md-1 cell">{{ total | currency }}</div>
         </div>
     </div>
 

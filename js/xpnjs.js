@@ -7,7 +7,7 @@ var xpnjsApp = angular.module('xpnjsApp', ["xeditable", "ui.bootstrap"]);
 
 xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
     // debug?
-    $scope.debug = false;
+    $scope.debug = true;
 
     // loading data
     $http.get('data/xpns-201312.json').success(function(data) {
@@ -18,6 +18,9 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
 
         // all types from the model:
         $scope.types = detectTypes($scope.xpns);
+        
+        // init form object
+        $scope.newLine = initNewLine($scope.types);
     });
     // property on which to order by
     $scope.orderProp = 'date';
@@ -26,6 +29,10 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
     $scope.$watch('xpns', sumLines, true);
     function sumLines(records) {
         $scope.total = 0;
+        // reset totals
+        angular.forEach($scope.types, function(type) {
+            type.total = 0;
+        });
         angular.forEach(records, function(record) {
             if (record.value) {
                 $scope.types[record.type].total += record.value;
@@ -36,28 +43,30 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
 
     // adding OR editing a line
     $scope.addLine = function(newLine, valid) {
-        if (valid ) {
+        if (valid) {
+            var newItem = {};
             if (newLine && !newLine.id) {
                 console.log('adding: ' + newLine);
-                newLine.id = $scope.nextId;
+                newItem.id = $scope.nextId;
                 $scope.nextId++;
             } else {
                 console.log('replacing: ' + newLine);
+                newItem.id = newLine.id;
                 removeById($scope.xpns, newLine.id);
             }
-            $scope.xpns.push(newLine);
-            $scope.newLine = null;
-        }
-    };
+            newItem.date = newLine.date;
+            newItem.label = newLine.label;
+            newItem.comment = newLine.comment;
+            $.each(newLine.val, function(key, val) {
+                if (val) {
+                    newItem.type = key;
+                    newItem.value = val;
+                    return;
+                }
+            });
 
-    // edit line
-    $scope.editLine = function(line) {
-        $scope.newLine = angular.copy(line);
-    };
-    // returns false if the new date is null
-    $scope.checkDate = function(data, oldValue) {
-        if (!data) {
-            return false;
+            $scope.xpns.push(newItem);
+            $scope.newLine = initNewLine($scope.types);
         }
     };
 
@@ -92,6 +101,15 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
             }
         }
         return types;
+    }
+    function initNewLine(types) {
+        var newLine = {'val': {}};
+        if (types) {
+            angular.forEach(types, function(type) {
+                newLine.val[type.label] = null;
+            });
+        }
+        return newLine;
     }
 });
 
@@ -130,7 +148,7 @@ xpnjsApp.directive('bsHasError', [function() {
                             $(current).parent().toggleClass(oldVal);
                     });
                 }
-            })
+            });
         }
     };
 }]);
@@ -144,7 +162,6 @@ xpnjsApp.directive('cell', [function() {
                 return ret;
             }, function(hasInput) {
                 element.toggleClass('input-cell', hasInput);
-//                element.toggleClass('cell', !hasInput);
             });
         }
     };

@@ -41,9 +41,9 @@
                                         e-show-button-bar="false" e-datepicker-popup="dd/MM" e-required="true"
                                         e-class="form-control">{{xpn.date | date:'dd/MM'}}</span></div>
             <div class="col-md-4 cell"><span editable-text="xpn.label" buttons="no">{{xpn.label}}</span></div>
-            <div class="col-md-1 cell" ng-repeat="type in types">
-                <span editable-number="xpn.value" buttons="no" ng-show="xpn.type === type.label">{{xpn.value | currency}}&nbsp;</span>
-                <span ng-show="xpn.type != type.label">&nbsp;</span></div>
+            <div class="col-md-1 cell" ng-repeat="type in types" ng-switch on="xpn.type === type.label">
+                <span editable-number="xpn.value" buttons="no" ng-switch-when="true">{{xpn.value | currency}}&nbsp;</span>
+                <span ng-switch-default>&nbsp;</span></div>
             <div class="col-md-1 action-cell"><a href="#" ng-click="removeLine(xpn)"><span class="glyphicon glyphicon-remove"></span></a></div>
         </div>
 
@@ -54,12 +54,9 @@
                                           required class="form-control"/></div>
             <div class="col-md-4 cell"><input type="text" ng-model="newLine.label" required class="form-control"/></div>
 
+            <div class="col-md-1 cell" ng-repeat="type in types">
+				<input type="number" min="0" ng-model="newLine.val[type.label]" class="form-control"/></div>
 
-            <!--<div class="col-md-1 cell" ng-repeat="type in types"><input type="number" min="0" ng-model="newLine[$type]" class="form-control"/></div>-->
-
-
-            <!--<div class="col-md-1 cell"><input type="number" min="0" ng-model="newLine.resto" class="form-control"/></div>-->
-            <!--<div class="col-md-1 cell   "><input type="number" min="0" ng-model="newLine.parking" class="form-control"/></div>-->
             <div class="col-md-1 action-cell"><a href="#" ng-show="lineForm.$valid" ng-click="addLine(newLine, lineForm.$valid)">
                 <span class="glyphicon glyphicon-ok"></span>
             </a></div>

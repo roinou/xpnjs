@@ -15,6 +15,9 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
 
         // next line ID
         $scope.nextId = $scope.xpns.length + 1;
+
+        // all types from the model:
+        $scope.types = detectTypes($scope.xpns);
     });
     // property on which to order by
     $scope.orderProp = 'date';
@@ -22,15 +25,13 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
     // watching changes to recalculate total amounts
     $scope.$watch('xpns', sumLines, true);
     function sumLines(records) {
-        var resto = 0;
-        var parking = 0;
+        $scope.total = 0;
         angular.forEach(records, function(record) {
-            if (record.resto) resto += record.resto;
-            if (record.parking) parking += record.parking;
+            if (record.value) {
+                $scope.types[record.type].total += record.value;
+                $scope.total += record.value;
+            }
         });
-        $scope.totalParking = parking;
-        $scope.totalResto = resto;
-        $scope.total = parking + resto;
     }
 
     // adding OR editing a line
@@ -77,6 +78,20 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
             if(array[d].id === id)
                 return array.splice(d, 1);
         }
+    }
+
+    // load data method.
+    function detectTypes(array) {
+        var types = {};
+        if (array) {
+            for (var i = 0, len = array.length; i < len; i += 1) {
+                var type = array[i].type;
+                if (type && !(type in types)) {
+                    types[type] = {'label': type, 'total': 0};
+                }
+            }
+        }
+        return types;
     }
 });
 

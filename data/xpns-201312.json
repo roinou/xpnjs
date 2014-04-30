@@ -5,20 +5,37 @@
             "id": 1,
             "date": "2013-12-29",
             "label": "resto 1",
-            "resto": 23.35,
-            "parking": null
+            "comment": "this is the comment",
+
+            "type": "restaurant",
+            "value": 33.35
         },
         {
             "id": 2,
             "date": "2013-12-28",
             "label": "resto 2",
-            "resto": 41.7
+            "comment": "this is the comment",
+
+            "type": "restaurant",
+            "value": 23.35
         },
         {
             "id": 3,
             "date": "2013-12-23",
             "label": "parking",
-            "parking": 1.5
+            "comment": "this is the comment",
+
+            "type": "parking",
+            "value": 3.35
+        },
+        {
+            "id": 4,
+            "date": "2013-12-09",
+            "label": "transport",
+            "comment": "STIB",
+
+            "type": "transport",
+            "value": 25
         }
     ]
 }

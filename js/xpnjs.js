@@ -7,10 +7,12 @@ var xpnjsApp = angular.module('xpnjsApp', ["xeditable", "ui.bootstrap"]);
 
 xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
     // debug?
-    $scope.debug = true;
+    $scope.debug = false;
 
     // loading data
-    $http.get('data/xpns-201312.json').success(function(data) {
+    $http.get('http://localhost:8080/data/201312.json').success(function(data) {
+        $scope.originalData = data;
+
         $scope.xpns = data.data;
 
         // next line ID
@@ -22,6 +24,14 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
         // init form object
         $scope.newLine = initNewLine($scope.types);
     });
+
+    $scope.saveData = function() {
+        $scope.originalData.data = $scope.xpns;
+        $http.post('http://localhost:8080/data/201312.json', $scope.originalData).then(function(data) {
+            $scope.msg = 'Data saved';
+        });
+    };
+
     // property on which to order by
     $scope.orderProp = 'date';
 

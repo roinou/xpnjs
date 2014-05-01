@@ -27,6 +27,8 @@
 
     <h1 class="main">Note de Frais</h1>
 
+    <a href="#" ng-click="saveData()"><span class="glyphicon glyphicon-save"></span></a>
+
     <div class="container xpenses">
         <div class="row header">
             <div class="col-md-2 cell">date</div>
@@ -44,7 +46,7 @@
             <div class="col-md-1 cell" ng-repeat="type in types" ng-switch on="xpn.type === type.label">
                 <span editable-number="xpn.value" buttons="no" ng-switch-when="true">{{xpn.value | currency}}&nbsp;</span>
                 <span ng-switch-default>&nbsp;</span></div>
-            <div class="col-md-1 action-cell"><a href="#" ng-click="removeLine(xpn)"><span class="glyphicon glyphicon-remove"></span></a></div>
+            <div class="action-cell"><a href="#" ng-click="removeLine(xpn)"><span class="glyphicon glyphicon-remove"></span></a></div>
         </div>
 
        <form name="lineForm" novalidate ng-submit="addLine(newLine, lineForm.$valid)">
@@ -55,9 +57,9 @@
             <div class="col-md-4 cell"><input type="text" ng-model="newLine.label" required class="form-control"/></div>
 
             <div class="col-md-1 cell" ng-repeat="type in types">
-				<input type="number" min="0" ng-model="newLine.val[type.label]" class="form-control"/></div>
+				<input type="number" ng-model="newLine.val[type.label]" class="form-control"/></div>
 
-            <div class="col-md-1 action-cell"><a href="#" ng-show="lineForm.$valid" ng-click="addLine(newLine, lineForm.$valid)">
+            <div class="action-cell"><a href="#" ng-show="lineForm.$valid" ng-click="addLine(newLine, lineForm.$valid)">
                 <span class="glyphicon glyphicon-ok"></span>
             </a></div>
         </div>

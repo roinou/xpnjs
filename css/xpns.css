@@ -26,6 +26,10 @@ div.header {
     padding-bottom: 3px;
     padding-top: 3px;
 }
+.xpenses .row .action-cell {
+    float: left;
+    padding-left: 10px;
+}
 .xpenses .row .action-cell a {
     padding-top: 10px;
     display: none;

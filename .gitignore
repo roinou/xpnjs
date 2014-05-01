@@ -1,3 +1,5 @@
 .idea
 xpnjs.iml
 bower_components
+file-server/*.iml
+file-server/node_modules

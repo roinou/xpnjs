@@ -5,35 +5,73 @@
 
 var xpnjsApp = angular.module('xpnjsApp', ["xeditable", "ui.bootstrap"]);
 
-xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
+// app configuration
+xpnjsApp.constant('config', {
+    'dataUrl' : 'data/'
+});
+
+xpnjsApp.service('dataService', ['$http', 'config', function($http, config) {
+
+    var baseUrl = config.dataUrl;
+
+    function initNewLine(types) {
+        var newLine = {'val': {}};
+        if (types) {
+            angular.forEach(types, function(type) {
+                newLine.val[type.label] = null;
+            });
+        }
+        return newLine;
+    }
+    this.initNewLine = initNewLine;
+
+    // load data method.
+    function detectTypes(array) {
+        var types = {};
+        if (array) {
+            for (var i = 0, len = array.length; i < len; i += 1) {
+                var type = array[i].type;
+                if (type && !(type in types)) {
+                    types[type] = {'label': type, 'total': 0};
+                }
+            }
+        }
+        return types;
+    }
+    this.detectTypes = detectTypes;
+
+    this.load = function(name) {
+        var url = baseUrl + name;
+        // working with promise
+        return $http.get(url).then(function(response) {
+            return response.data;
+        });
+    };
+    
+    this.save = function(xpns, range) {
+        var data = { 'range': range, 'data': xpns };
+        $http.post(baseUrl + range, data);
+    };
+}]);
+
+xpnjsApp.controller('xpnsListCtrl', ['$scope', '$http', 'dataService', function ($scope, $http, dataService) {
     // debug?
     $scope.debug = false;
 
+    // property on which to order by
+    $scope.orderProp = 'date';
+
     // loading data
-    $http.get('http://localhost:8080/data/201312.json').success(function(data) {
-        $scope.originalData = data;
-
+    dataService.load('xpns-201312.json').then(function(data) {
         $scope.xpns = data.data;
-
-        // next line ID
-        $scope.nextId = $scope.xpns.length + 1;
-
-        // all types from the model:
-        $scope.types = detectTypes($scope.xpns);
-        
-        // init form object
-        $scope.newLine = initNewLine($scope.types);
+        $scope.range = data.range;
+        $scope.types = dataService.detectTypes($scope.xpns);
+        $scope.newLine = dataService.initNewLine($scope.types);
     });
 
     $scope.saveData = function() {
-        $scope.originalData.data = $scope.xpns;
-        $http.post('http://localhost:8080/data/201312.json', $scope.originalData).then(function(data) {
-            $scope.msg = 'Data saved';
-        });
+        dataService.save($scope.xpns, '201312');
     };
-
-    // property on which to order by
-    $scope.orderProp = 'date';
 
     // watching changes to recalculate total amounts
     $scope.$watch('xpns', sumLines, true);
@@ -51,19 +89,11 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
         });
     }
 
-    // adding OR editing a line
+    // adding a line
     $scope.addLine = function(newLine, valid) {
-        if (valid) {
+        if (valid && newLine) {
             var newItem = {};
-            if (newLine && !newLine.id) {
-                console.log('adding: ' + newLine);
-                newItem.id = $scope.nextId;
-                $scope.nextId++;
-            } else {
-                console.log('replacing: ' + newLine);
-                newItem.id = newLine.id;
-                removeById($scope.xpns, newLine.id);
-            }
+            console.log('adding: ' + newLine);
             newItem.date = newLine.date;
             newItem.label = newLine.label;
             newItem.comment = newLine.comment;
@@ -74,54 +104,19 @@ xpnjsApp.controller('xpnsListCtrl', function ($scope, $http) {
                     return;
                 }
             });
-
             $scope.xpns.push(newItem);
-            $scope.newLine = initNewLine($scope.types);
+            $scope.newLine = dataService.initNewLine($scope.types);
         }
     };
 
     // delete line
-    $scope.removeLine = function (line) {
-        removeById($scope.xpns, line.id);
+    $scope.removeLine = function(line) {
+        var index = $scope.xpns.indexOf(line);
+        if (index > -1) {
+            $scope.xpns.splice(index, 1);
+        }
     };
-
-    // utility methods
-    /**
-     * removes an element from the array by its ID
-     * @param array the array to look in
-     * @param id the id to find
-     * @returns {*} the element found
-     */
-    function removeById(array, id) {
-        for (var d = 0, len = array.length; d < len; d += 1) {
-            if(array[d].id === id)
-                return array.splice(d, 1);
-        }
-    }
-
-    // load data method.
-    function detectTypes(array) {
-        var types = {};
-        if (array) {
-            for (var i = 0, len = array.length; i < len; i += 1) {
-                var type = array[i].type;
-                if (type && !(type in types)) {
-                    types[type] = {'label': type, 'total': 0};
-                }
-            }
-        }
-        return types;
-    }
-    function initNewLine(types) {
-        var newLine = {'val': {}};
-        if (types) {
-            angular.forEach(types, function(type) {
-                newLine.val[type.label] = null;
-            });
-        }
-        return newLine;
-    }
-});
+}]);
 
 // module init
 xpnjsApp.run(function(editableOptions) {

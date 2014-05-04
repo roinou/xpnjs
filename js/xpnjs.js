@@ -7,7 +7,8 @@ var xpnjsApp = angular.module('xpnjsApp', ["xeditable", "ui.bootstrap"]);
 
 // app configuration
 xpnjsApp.constant('config', {
-    'dataUrl' : 'data/'
+    'dataUrl' : 'http://localhost:8080/data/',
+    'types' : ['parking', 'restaurant', 'transport', 'autre']
 });
 
 xpnjsApp.service('dataService', ['$http', 'config', function($http, config) {
@@ -28,15 +29,22 @@ xpnjsApp.service('dataService', ['$http', 'config', function($http, config) {
     // load data method.
     function detectTypes(array) {
         var types = {};
+        if (config.types) {
+            for (var i = 0, len = config.types.length; i < len; i += 1) {
+                appendType(types, config.types[i]);
+            }
+        }
         if (array) {
-            for (var i = 0, len = array.length; i < len; i += 1) {
-                var type = array[i].type;
-                if (type && !(type in types)) {
-                    types[type] = {'label': type, 'total': 0};
-                }
+            for (var j = 0, leng = array.length; j < leng; j += 1) {
+                appendType(types, array[j].type)
             }
         }
         return types;
+    }
+    function appendType(types, type) {
+        if (type && !(type in types)) {
+            types[type] = {'label': type, 'total': 0};
+        }
     }
     this.detectTypes = detectTypes;
 
@@ -49,12 +57,15 @@ xpnjsApp.service('dataService', ['$http', 'config', function($http, config) {
     };
     
     this.save = function(xpns, range) {
-        var data = { 'range': range, 'data': xpns };
-        $http.post(baseUrl + range, data);
+        if (xpns && range) {
+            console.log('saving:', xpns, range);
+            var data = { 'range': range, 'data': xpns };
+            $http.post(baseUrl + range, data);
+        }
     };
 }]);
 
-xpnjsApp.controller('xpnsListCtrl', ['$scope', '$http', 'dataService', function ($scope, $http, dataService) {
+xpnjsApp.controller('xpnsListCtrl', ['$scope', '$http', '$filter', 'dataService', function ($scope, $http, $filter, dataService) {
     // debug?
     $scope.debug = false;
 
@@ -62,16 +73,42 @@ xpnjsApp.controller('xpnsListCtrl', ['$scope', '$http', 'dataService', function 
     $scope.orderProp = 'date';
 
     // loading data
-    dataService.load('xpns-201312.json').then(function(data) {
-        $scope.xpns = data.data;
-        $scope.range = data.range;
-        $scope.types = dataService.detectTypes($scope.xpns);
-        $scope.newLine = dataService.initNewLine($scope.types);
-    });
+    function load(range) {
+        dataService.load(range).then(function(data) {
+            if (data.data) {
+                $scope.xpns = data.data;
+                $scope.range = data.range;
+            }
+            else {
+                $scope.xpns = [];
+                $scope.range = range;
+            }
+            $scope.types = dataService.detectTypes($scope.xpns);
+            $scope.newLine = dataService.initNewLine($scope.types);
+        });
+    }
 
     $scope.saveData = function() {
-        dataService.save($scope.xpns, '201312');
+        dataService.save($scope.xpns, $scope.range);
     };
+
+    // whatch the change of range
+    $scope.$watch('_range', changeDate);
+    // if date of range changed, save old values, then reload new ones.
+    function changeDate(after, before) {
+        if (before !== after) {
+            if (before) {
+                var _before = $filter('rangeDate')(before);
+                dataService.save($scope.xpns, _before);
+            }
+            if (after) {
+                $scope.range = $filter('rangeDate')(after);
+                console.log('loading: ', $scope.range);
+                load($scope.range);
+            }
+        }
+
+    }
 
     // watching changes to recalculate total amounts
     $scope.$watch('xpns', sumLines, true);
@@ -96,6 +133,7 @@ xpnjsApp.controller('xpnsListCtrl', ['$scope', '$http', 'dataService', function 
             console.log('adding: ' + newLine);
             newItem.date = newLine.date;
             newItem.label = newLine.label;
+            newItem.provider = newLine.provider;
             newItem.comment = newLine.comment;
             $.each(newLine.val, function(key, val) {
                 if (val) {
@@ -163,11 +201,31 @@ xpnjsApp.directive('cell', [function() {
         restrict: "C",
         link: function(scope, element, attrs, ctrl) {
             scope.$watch(function () {
-                var ret = element.find("form").length > 0;
-                return ret;
+                return element.find("form").length > 0;
             }, function(hasInput) {
                 element.toggleClass('input-cell', hasInput);
             });
         }
     };
 }]);
+
+// date filters
+xpnjsApp.filter('rangeDate', function($filter) {
+    return function(input) {
+        if (input == null) {
+            return "";
+        }
+        var _date = $filter('date')(new Date(input), 'yyyy-MM');
+        return _date.toUpperCase();
+    };
+});
+xpnjsApp.filter('xpnDate', function($filter) {
+    return function(input) {
+        if (input == null) {
+            return "";
+        }
+        var _date = $filter('date')(new Date(input), 'dd/MM/yyyy');
+        return _date.toUpperCase();
+    };
+});
+

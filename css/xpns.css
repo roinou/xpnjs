@@ -18,6 +18,9 @@ div.header {
     padding-bottom: 10px;
     padding-top: 10px;
 }
+.xpenses .last.cell {
+    width: 23%;
+}
 .xpenses .form-group .cell{
     padding-bottom: 5px;
     padding-top: 5px;
@@ -28,7 +31,7 @@ div.header {
 }
 .xpenses .row .action-cell {
     float: left;
-    padding-left: 10px;
+    padding-left: 5px;
 }
 .xpenses .row .action-cell a {
     padding-top: 10px;
@@ -37,6 +40,9 @@ div.header {
 .xpenses .row:hover .action-cell a {
     padding-top: 10px;
     display: block;
+}
+.xpenses .total {
+    font-weight: bold;
 }
 
 /* XEDITABLE */

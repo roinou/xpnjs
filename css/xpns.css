@@ -56,6 +56,11 @@ div.header {
     body {
         font-size: 12px;
     }
+    h1.main {
+        padding-top: 0;
+        margin-top: 0;
+        padding-bottom: 0.5em;
+    }
 
     .container {
         width: auto;
@@ -64,5 +69,10 @@ div.header {
     }
     .editable-click {
         border-bottom: none;
+    }
+    .xpenses .cell {
+        padding-bottom: 5px;
+        padding-top: 5px;
+        padding-left: 10px;
     }
 }

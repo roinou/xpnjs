@@ -25,6 +25,7 @@
 </head>
 <body ng-controller="xpnsListCtrl">
 
+    <img src="image/vershina-logo.jpg" class="logo"/>
     <h1 class="main">Note de Frais</h1>
 
     <div class="container"><div class="row">
@@ -37,6 +38,7 @@
                 <span ng-switch-default>{{_range | rangeDate}}</span>
             </span>
             </div>
+        <div class="col-xs-3"><strong>Vershina SPRL</strong></div>
         <div class="col-xs-1 hidden-print"><a href="#" ng-click="saveData()"><span class="glyphicon glyphicon-save">save</span></a></div>
     </div></div>
 

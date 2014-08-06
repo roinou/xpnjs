@@ -4,6 +4,10 @@ h1.main {
     padding-bottom: 1em;
 }
 
+img.logo {
+    position: absolute;
+    padding-left: 50px;
+}
 
 div.header {
     padding: 10px 0;
@@ -62,7 +66,9 @@ div.header {
         padding-bottom: 0.5em;
         font-size: 2em;
     }
-
+    img.logo {
+        width: 180px;
+    }
     .container {
         width: auto;
         margin-left: 0;
